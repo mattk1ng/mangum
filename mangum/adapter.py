@@ -6,13 +6,13 @@ from itertools import chain
 from typing import Any
 
 from mangum.exceptions import ConfigurationError
-from mangum.handlers import ALB, APIGateway, HTTPGateway, LambdaAtEdge
+from mangum.handlers import ALB, APIGateway, BasicHandler, HTTPGateway, LambdaAtEdge
 from mangum.protocols import HTTPCycle, LifespanCycle
 from mangum.types import ASGI, LambdaConfig, LambdaContext, LambdaEvent, LambdaHandler, LifespanMode
 
 logger = logging.getLogger("mangum")
 
-HANDLERS: list[type[LambdaHandler]] = [ALB, HTTPGateway, APIGateway, LambdaAtEdge]
+HANDLERS: list[type[LambdaHandler]] = [ALB, HTTPGateway, APIGateway, LambdaAtEdge, BasicHandler]
 
 DEFAULT_TEXT_MIME_TYPES: list[str] = [
     "text/",
