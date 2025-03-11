@@ -3,12 +3,11 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, ValidationError
+from pydantic import BaseModel, ConfigDict, ValidationError, ValidationInfo, field_validator
 
 from mangum.handlers.utils import (
     handle_exclude_headers,
     handle_multi_value_headers,
-    maybe_encode_body,
 )
 from mangum.types import (
     LambdaConfig,
@@ -51,7 +50,13 @@ class BasicHandlerEventScope(BaseModelWithForbidExtra):
 
 class BasicHandlerEvent(BaseModelWithForbidExtra):
     scope: BasicHandlerEventScope
-    body: str
+    body: bytes
+
+    @field_validator("body", mode="before")
+    def check_bytes(cls, v, info: ValidationInfo):
+        if not isinstance(v, bytes):
+            raise ValueError("body must be of type bytes")
+        return v
 
 
 class BasicHandler:
@@ -66,10 +71,7 @@ class BasicHandler:
 
     @property
     def body(self) -> bytes:
-        return maybe_encode_body(
-            self.event.get("body", b""),
-            is_base64=False,
-        )
+        return self.event.get("body", b"")
 
     @property
     def scope(self) -> Scope:

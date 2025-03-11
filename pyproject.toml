@@ -42,7 +42,7 @@ dev-dependencies = [
     "mkautodoc",
     "mkdocs>=1.6.0; python_version >= '3.12'",
     "mkdocs-material; python_version >= '3.12'",
-    "pydantic"
+    "pydantic==2.5.3"
 ]
 
 [project.urls]

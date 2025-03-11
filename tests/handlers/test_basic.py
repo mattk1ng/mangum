@@ -30,9 +30,10 @@ def test_basic_event_scope_real(method, path, body):
     "model, is_valid",
     [
         ({}, False),
-        ({"scope": {"path": "/", "method": "POST", "headers": {}}, "body": ""}, True),
+        ({"scope": {"path": "/", "method": "POST", "headers": {}}, "body": b""}, True),
         ({"scope": {"path": "/", "method": "POST", "headers": {}}}, False),
-        ({"scope": {"path": "/", "method": "POST", "headers": {}}, "body": "", "extra": ""}, False),
+        ({"scope": {"path": "/", "method": "POST", "headers": {}}, "body": b"", "extra": ""}, False),
+        ({"scope": {"path": "/", "method": "UNKNOWN", "headers": {}}, "body": b""}, False),
         ({"scope": {"path": "/", "method": "UNKNOWN", "headers": {}}, "body": ""}, False),
     ],
 )
@@ -51,6 +52,14 @@ def test_basic_event_infer(model, is_valid):
             b"application/json",
             b"text/plain; charset=utf-8",
             json.dumps({"hello": "world"}).encode("utf-8"),
+            b"Hello world",
+        ),
+        (
+            "GET",
+            "/",
+            b"text/plain; charset=utf-8",
+            b"text/plain; charset=utf-8",
+            b"",
             b"Hello world",
         ),
     ],
