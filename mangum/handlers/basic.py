@@ -79,9 +79,11 @@ class BasicHandler:
         headers = {k.lower(): v for k, v in headers.items()}
 
         return {
+            "type": "http",
             "path": self.event["scope"]["path"],
             "method": self.event["scope"]["method"],
             "headers": [[k.encode(), v.encode()] for k, v in headers.items()],
+            "query_string": b"",
             "asgi": {"version": "3.0", "spec_version": "2.0"},
             "aws.event": self.event,
             "aws.context": self.context,

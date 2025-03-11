@@ -17,9 +17,11 @@ def test_basic_event_scope_real(method, path, body):
     handler = BasicHandler(event, example_context, {})
 
     assert handler.scope == {
+        "type": "http",
         "path": path,
         "method": method,
         "headers": [],
+        "query_string": b"",
         "asgi": {"version": "3.0", "spec_version": "2.0"},
         "aws.context": {},
         "aws.event": event,
